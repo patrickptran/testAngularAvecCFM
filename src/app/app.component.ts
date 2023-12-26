@@ -1,13 +1,12 @@
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {
   CellValueChangedEvent,
   ColDef,
   GridReadyEvent,
   ICellRendererParams,
-  ValueFormatterParams,
   SelectionChangedEvent,
   GridApi,
 } from 'ag-grid-community';
@@ -23,7 +22,7 @@ interface IRow {
   key: string;
 }
 
-// Custom Cell Renderer Component
+// Image Champion Cell Renderer Component
 @Component({
   selector: 'app-company-logo-renderer',
   standalone: true,
@@ -66,7 +65,7 @@ export class ImageRenderChamp implements ICellRendererAngularComp {
     <div class="content">
       <!-- The AG Grid component, with Dimensions, CSS Theme, Row Data, and Column Definition -->
       <ag-grid-angular
-        style="width: 100%; height: 350px;"
+        style="width: 100%; height: 550px;"
         [class]="themeClass"
         [rowData]="rowData"
         [columnDefs]="colDefs"
@@ -75,6 +74,7 @@ export class ImageRenderChamp implements ICellRendererAngularComp {
         [pagination]="true"
         (cellValueChanged)="onCellValueChanged($event)"
         (selectionChanged)="onSelectionChanged($event)"
+        [rowSelection]="'multiple'"
       >
       </ag-grid-angular>
     </div>
@@ -93,10 +93,14 @@ export class AppComponent {
 
   // Column Definitions: Defines & controls grid columns.
   colDefs: ColDef<IRow>[] = [
+    { field: 'name', checkboxSelection: true },
+    {
+      field: 'key',
+      cellRenderer: ImageRenderChamp,
+    },
+
     { field: 'title' },
     { field: 'id', width: 75 },
-    { field: 'key', cellRenderer: ImageRenderChamp },
-    { field: 'name' },
   ];
 
   // Default Column Definitions: Apply configuration across all columns

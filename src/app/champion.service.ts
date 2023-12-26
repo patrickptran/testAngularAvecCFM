@@ -14,4 +14,9 @@ export class ChampionService {
   getChampions(): Observable<Champion[]> {
     return this.http.get<Champion[]>(this.apiUrl);
   }
+
+  deleteChampion(champion: Champion): Observable<void> {
+    const deleteUrl = `${this.apiUrl}/${champion.id}`; // Adjust the URL based on your API
+    return this.http.delete<void>(deleteUrl);
+  }
 }
